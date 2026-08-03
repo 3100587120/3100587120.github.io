@@ -13,3 +13,61 @@
     <!-- 卡片封面图：替换为你自己的HTTPS图片直链，建议尺寸 ≥ 300*300px -->
     <meta property="og:image" content="https://ts2.tc.mm.bing.net/th/id/OIP-C.UYXIreUo51HAK4h_G22Y-QAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
     <meta property="og:site_name" content="内容详情">
+
+    <style>
+        * { margin: 0; padding: 0; }
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: #333;
+            font-size: 18px;
+        }
+        .wechat-tip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 16px;
+            text-align: center;
+            display: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="wechat-tip">请点击右上角 → 在浏览器中打开</div>
+    <div>正在准备中...</div>
+
+    <script>
+        const iosUrl = 'https://apps.apple.com/cn/app/%E5%8E%9F%E7%A5%9E/id1467190251';
+        const androidUrl = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_default';
+
+        const ua = navigator.userAgent;
+        const isIOS = /iPhone|iPad|iPod/i.test(ua);
+        const isAndroid = /Android/i.test(ua);
+        const isWechat = /MicroMessenger/i.test(ua);
+
+        if (isWechat) {
+            document.querySelector('.wechat-tip').style.display = 'block';
+        }
+
+        window.onload = function() {
+            setTimeout(() => {
+                if (isIOS) {
+                    window.location.href = iosUrl;
+                } else if (isAndroid) {
+                    window.location.href = androidUrl;
+                } else {
+                    window.location.href = 'https://ys.mihoyo.com/';
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
