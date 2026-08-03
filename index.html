@@ -17,7 +17,15 @@
             color: #333;
         }
         .tip { font-size: 18px; margin-bottom: 20px; }
-        .link { color: #e67e22; text-decoration: none; font-size: 16px; }
+        .btn {
+            padding: 16px 48px;
+            background: #e67e22;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 18px;
+            text-decoration: none;
+            display: none;
+        }
         .wechat-tip {
             position: fixed;
             top: 0;
@@ -34,38 +42,42 @@
 </head>
 <body>
     <div class="wechat-tip">请点击右上角 → 在浏览器中打开</div>
-    <p class="tip">正在跳转到下载页...</p>
-    <a href="" class="link" id="manualLink">如果没有自动跳转，请点击这里</a>
+    <p class="tip" id="tipText">正在跳转到下载页...</p>
+    <a href="" class="btn" id="downloadBtn" download>点击下载原神</a>
 
     <script>
-        // 各平台下载地址
-        const iosUrl = 'https://apps.apple.com/cn/app/%E5%8E%9F%E7%A5%9E/id1515948980';
+        // 国内iOS App Store 原神官方地址
+        const iosUrl = 'https://apps.apple.com/cn/app/%E5%8E%9F%E7%A5%9E/id1467190251';
+        // 安卓官方下载接口，直接触发APK下载，不跳转下载页
         const androidUrl = 'https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/android_default';
-        const pcUrl = 'https://ys.mihoyo.com/';
 
         const ua = navigator.userAgent;
-        let targetUrl = pcUrl;
-
-        // 判断设备系统
-        if (/iPhone|iPad|iPod/i.test(ua)) {
-            targetUrl = iosUrl;
-        } else if (/Android/i.test(ua)) {
-            targetUrl = androidUrl;
-        }
-
-        // 设置手动跳转链接
-        document.getElementById('manualLink').href = targetUrl;
-
-        // 微信环境提示
+        const isIOS = /iPhone|iPad|iPod/i.test(ua);
+        const isAndroid = /Android/i.test(ua);
         const isWechat = /MicroMessenger/i.test(ua);
+
+        // 微信环境统一提示
         if (isWechat) {
             document.querySelector('.wechat-tip').style.display = 'block';
         }
 
-        // 1秒后自动跳转
-        setTimeout(() => {
-            window.location.href = targetUrl;
-        }, 1000);
+        if (isIOS) {
+            // iOS自动跳转App Store
+            setTimeout(() => {
+                window.location.href = iosUrl;
+            }, 1000);
+        } else if (isAndroid) {
+            // 安卓显示下载按钮，点击直接下载
+            document.getElementById('tipText').innerText = '点击下方按钮下载';
+            const btn = document.getElementById('downloadBtn');
+            btn.style.display = 'inline-block';
+            btn.href = androidUrl;
+        } else {
+            // 电脑端跳转官网
+            setTimeout(() => {
+                window.location.href = 'https://ys.mihoyo.com/';
+            }, 1000);
+        }
     </script>
 </body>
 </html>
